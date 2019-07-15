@@ -4,7 +4,9 @@
 
 # 第一门后端语言
 
-系统环境WAMP (Win,Apache,Mysql,PHP)
+系统环境WAMP (Win,Apache,Mysql,PHP)，包大于100M
+
+Node的安装包17M
 
 PHP后端语言
 
@@ -95,7 +97,7 @@ Ctrl+C
 模块系统是 Node.js 最基本也是最常用的。一般情况模块可分为四类：
 
 - 原生模块
-- 文件模块
+- 文件模块(属于原生模块，特殊的原生模块)
 - 第三方模块
 - 自定义模块
 
@@ -158,3 +160,156 @@ module.exports = { plus, sub }
 // 导出一个数组
 // module.exports = [plus]
 ```
+
+
+# 原生模块
+
+Node 牺牲了DOM和BOM的后端语言
+
+JS语言给弱化，牺牲了DOM和BOM，增加了独有的新方法，补丁，ES6
+
+原生模块就是帮JS赋予一些后端特性的功能
+
+- [原生模块的官方文档](http://nodejs.cn/api/)
+
+### fs(file system)文件系统模块
+
+回想一下，以前JS在浏览器环境，是无法做到一件事件，那就是更改系统的一些文件，比如我不能在浏览器去对系统上的一些文件进行增删查改
+
+原生模块不需要再导出，因为本身node就拥有的，原生不需要写引入的路径
+
+```js
+// 要写路径，模块是自己写的时候，才需要路径
+var $ = require('./jquery.js')
+// 原生模块由于是自带的，所以不需要路径后缀等，自己引入模块的名字即可
+var fs = require('fs')
+```
+
+当我们打印这个fs变量的时候，发现导出是一个对象，并且对象里面有个规律，大部分每个函数里面都会对应xxx和xxxSync
+
+以Sync结束都是同步方法，反之就是异步方法(async)
+
+Node默认是支持异步的
+
+前端三个主要的异步方法，同步编程其实是低效的
+```js
+XMLHttpRequest
+setInterval
+setTimeout
+```
+
+同步是阻塞的，低效，符合人类思维
+
+异步是非阻塞的，高效，不符合人类思维
+```js
+// 异步一般都是两个特征的，第一是没有Sync，第二都要接受回调函数
+fs.readFile(path[, options可选项], callback)
+fs.readFileSync(path[, options])
+```
+
+回调函数里面一般监听两个变量，第一个变量一般都是监听错误的，因为异步，错误前置，你必须判断有没有报错，你好意思往下执行
+```js
+// 引入第一个原生模块
+var fs = require('fs');
+// 导出很多同步和异步方法
+// console.log(fs);
+console.log(1)
+// 异步读取文件
+// 异步不阻塞我们的程序
+fs.readFile('../text.txt', {
+    encoding: 'utf8',
+    flag: 'r'
+}, (err, data) => {
+    console.log(data)
+})
+
+// 如果这里需要披萨
+console.log(2)
+
+$.ajax({
+    success(data){
+
+    }
+})
+
+console.log(data)
+```
+
+由于异步的原因，1是会被先打印，由于读是异步，所以不阻塞，也就是不等待，所以先打印的2，然后回调成功就再打印读成功的结果
+
+<img src="6.png"/>
+
+写入数据
+
+```js
+const {
+    writeFile
+} = require('fs')
+
+writeFile('../text.txt', 'hello world1213', (err, data) => {
+    if (err) {
+        console.log("写入失败")
+    } else {
+        console.log("写入成功")
+    }
+})
+```
+
+## http
+
+http网络协议
+
+就是我们前端要跟后端做通信的话，必须要借助http协议
+
+客户端和服务端通信的最常见手段
+```js
+
+```
+
+
+
+# 自定义模块
+
+自己写的模块，称之为自定义模块
+
+```js
+// 要写路径，模块是自己写的时候，才需要路径
+var $ = require('./jquery.js')
+```
+
+# 异步和同步
+
+同步
+```js
+// 引入第一个原生模块
+var fs = require('fs');
+// 导出很多同步和异步方法
+// console.log(fs);
+console.log(1)
+
+// 同步读 等待读取完成，才往下执行
+var data = fs.readFileSync('../text.txt', {
+    encoding: 'utf8',
+    flag: 'r'
+}, (err, data) => {
+    console.log(data)
+})
+
+console.log(data)
+```
+
+同步和异步都可以有回调
+- 同步的回调没意义
+- 异步的回调有意义
+
+- 异步有回调在于事情变高效，不浪费主线程的时间，不阻塞
+
+比如我要去买一个披萨，披萨店老板告诉我，你要等待30分钟才可以拿到（花时间去做），留一个电话（回调函数），我可以走开做自己的事情，等到这个电话打回来，我才回去拿披萨
+
+## 回调地狱(回调嵌套)
+
+Promise解决
+
+所以node使用大量的Promise来解决异步编程，比前端占比多很多
+
+async和await的写法
