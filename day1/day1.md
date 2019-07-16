@@ -172,6 +172,12 @@ JS语言给弱化，牺牲了DOM和BOM，增加了独有的新方法，补丁，
 
 - [原生模块的官方文档](http://nodejs.cn/api/)
 
+|JS|PHP|
+|-|-|
+|http(express)|apache|
+|fs(mongodb)|mysql|
+|net(socket.io)|websocket|
+
 ### fs(file system)文件系统模块
 
 回想一下，以前JS在浏览器环境，是无法做到一件事件，那就是更改系统的一些文件，比如我不能在浏览器去对系统上的一些文件进行增删查改
