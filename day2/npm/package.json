@@ -1,0 +1,19 @@
+{
+  "name": "yao",
+  "version": "5.2.0",
+  "description": "这是一个描述文件",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "dir"
+  },
+  "keywords": [
+    "cool",
+    "amazing"
+  ],
+  "author": "eno yao",
+  "license": "MIT",
+  "dependencies": {
+    "jquery": "^3.4.1"
+  }
+}

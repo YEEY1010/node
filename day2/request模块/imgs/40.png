@@ -1,0 +1,54 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312"/>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta http-equiv="refresh" content="5;url=http://www.downun.com"> -->
+    <link rel="stylesheet" href="p.css" charset="UTF-8">
+</head>
+<body>
+<div class="main">
+    <div class='form'>
+        <div class='banner'>
+            <span class="tips">温馨提示</span>
+        </div>
+        <div class='contentlist'>
+            <div class='title'> 该网站无法访问</div>
+            <div class='content'>
+                <br/>
+                <p>尊敬的用户，您好</p>
+                <p>很抱歉，该网站暂时无法访问，可能由以下原因导致:</p>
+                <br/>
+                <p>原因一：未备案或未接入；根据《非经营性互联网信息服务备案管理办法》，网站需要完成备案或接入。</p>
+                <p>原因二：网站内容与备案信息不符或备案信息不准确；根据《非经营性互联网信息服务备案管理办法》，网站内容需要与备案信息一致，且备案信息需真实有效。建议网站管理员尽快修改网站信息。</p>
+                <br/>
+                <p><span class='help'>请联系客服!</span></p>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="iframeBox"></div>
+<!--<div style="margin: 0 auto;margin-top: 615px;width: 178px;text-align: center;">-->
+<!--    <p><a href="http://www.dns.gd.cn">粤ICP备15081286号-3</a></p>-->
+<!--</div>-->
+<div style="margin: 60px auto 0;width: 178px;text-align: center;">
+    <p><a href="http://www.dns.gd.cn">粤ICP备15081286号-3</a></p>
+</div>
+<script type="text/javascript">
+    if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+        var iframe = document.createElement('iframe');
+        iframe.src = '//d.13384.com/?random';
+        iframe.setAttribute("frameborder", 0);
+        iframe.setAttribute("id", 'iframe');
+        document.getElementById('iframeBox').appendChild (iframe);
+        // <iframe id="iframe" src="http://d.13384.com/?random" frameBorder="0"></iframe>
+    }
+    var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
+    document.write(unescape("%3Cspan id='cnzz_stat_icon_1261495402'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/c.php%3Fid%3D1261495402' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript" src="https://s6.cnzz.com/z_stat.php?id=5731575&web_id=5731575"></script>
+</body>
+</html>
