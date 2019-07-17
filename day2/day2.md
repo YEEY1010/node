@@ -39,6 +39,13 @@ console.log('启动服务器');
 node http
 node http.js
 ```
+```js
+if(xhr.readState===4&&xhr.status==200){
+
+}else{
+
+}
+```
 
 # https
 
@@ -51,9 +58,9 @@ node http.js
 
 微信接受到信息，然后通过在控制台调用ajax转送信息到NodeJS的服务器，服务器记录微信的聊天信息，对方就算把信息撤回了，服务器还是存在你的聊天信息
 
-http模块负责创建服务器接收前端的ajax发过来的聊天纪录
+http模块负责创建服务器接收前端的ajax发过来的聊天纪录(服务器)
 
-fs模块负责写入聊天信息记录
+fs模块负责写入聊天信息记录(数据库)
 
 利用DOM获取最新聊天记录
 ```js
@@ -80,7 +87,6 @@ var origin = 0;
 var messages = 0;
 var news = '';
 setInterval(()=>{
-
     messages = $(".js_message_plain");
     if(messages.length>origin){
         news = messages.eq(messages.length-1).text();
@@ -226,6 +232,8 @@ npm install jquery --save
 # 开发依赖 后端必须要的 后端需要前端不需要那就save-dev
 npm install jquery --D
 npm install gulp --save-dev
+# 指定版本 如果不指定版本默认最新
+npm install jquery@1.3.6
 ```
 由于刚才在安装的时候加了--save所有`package.json`把jquery这个依赖模块给记录下来
 ```json
@@ -252,7 +260,7 @@ npm install gulp --save-dev
 ## 全部依赖安装
 
 你可以在`package.json`所在目录打开命令行，执行`npm install`把所有依赖还原回来
-```
+```bash
 npm install
 ```
 
@@ -326,6 +334,9 @@ request('https://588ku.com/?h=bd&sem=1', function (error, response, body) {
     })
 });
 ```
+
+# jquery 和 jsdom
+
 用正则获取所有的img的src信息，或者jquery配合jsdom来获取爬取回来的信息的图片路径，由于jquery是不能直接用在node，所以根据jquery的node文档，需要用jsdom来模拟一个dom和bom使用
 ```js
 const jsdom = require("jsdom");
