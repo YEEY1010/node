@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <input type="text" id="u" />
+    <input type="password" id="p" />
+    <button>登陆</button>
+    <script src="../后端/node_modules/jquery/dist/jquery.js"></script>
+    <script src="../后端/node_modules/axios/dist/axios.js"></script>
+    <script>
+        // axios
+        const login = () => {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:9999/login",
+                    data: {
+                        username: $("#u").val(),
+                        password: $("#p").val()
+                    },
+                    success(data) {
+                        resolve(data);
+                    },
+                    error(err) {
+                        reject(err);
+                    }
+                })
+                // let xhr = new XMLHttpRequest();
+                // axios.post('http://localhost:6666/login', {
+                //     username: $("#u").val(),
+                //     password: $("#p").val()
+                // })
+            })
+        }
+        $('button').click(async () => {
+            let data = await login();
+            // let data = await axios.post('http://localhost:9999/login', {
+            //     username: $("#u").val(),
+            //     password: $("#p").val()
+            // });
+            console.log(data);
+        })
+    </script>
+</body>
+
+</html>
