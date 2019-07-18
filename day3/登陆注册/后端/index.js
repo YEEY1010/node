@@ -17,6 +17,8 @@ app.get('/login', (req, res) => {
     res.send('hello world');
 })
 
+
+
 app.get('/list', async (req, res) => {
     let data = await new Promise((resolve, reject) => {
         fs.readFile('./list.json', (err, data) => {
@@ -25,6 +27,8 @@ app.get('/list', async (req, res) => {
     })
     res.send(data);
 })
+
+
 
 app.post('/login', (req, res) => {
     // 原生写法，是基于http事件驱动
