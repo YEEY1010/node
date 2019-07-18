@@ -143,3 +143,202 @@ path.join(__dirname, 'views')
 ```bash
 F:\三阶段\code\node\day1\原生模块\path\foo\bar\baz\asdf\abc\
 ```
+
+# mysql
+
+数据库
+
+<img src="3.png" />
+
+其他数据库 oracle,access,mongodb,excel
+
+连接数据库，在我们以前php，因为它自带了和mysql操作的方法，nodejs不会自带mysql的方法，但是它可以通过第三方模块来去控制
+
+[mysql的npm文档](https://www.npmjs.com/package/mysql)
+
+安装mysql模块
+```bash
+npm install mysql
+```
+新建一份server.js
+```js
+var mysql = require('mysql');
+var connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    // 数据库名字
+    database: 'baiyangwang'
+});
+// 执行连接
+connection.connect();
+
+connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
+    if (error) throw error;
+    console.log('The solution is: ', results[0].solution);
+});
+// 执行关闭
+connection.end();
+```
+正常的数据库，连接完成后会关闭
+
+如果使用的可视化软件，注意编码格式
+
+<img src="4.png" />
+
+mysql模块调用fs模块，fs模块上层建筑
+
+# 池连接
+
+数据池连接，没有这个连接和中断
+```js
+var mysql = require('mysql');
+var pool = mysql.createPool({
+    connectionLimit: 10,
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'test'
+});
+
+pool.query('SELECT * FROM students', function (error, results, fields) {
+    if (error) throw error;
+    console.log('The solution is: ', results[0].solution);
+});
+```
+下面这些代码，这个比较稳
+```js
+var mysql = require('mysql');
+var pool = mysql.createPool({
+    connectionLimit: 10,
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'test'
+});
+// 连接池可以执行连接和释放
+pool.getConnection(function (err, connection) {
+    if (err) throw err; // not connected!
+    // Use the connection
+    connection.query('SELECT something FROM sometable', function (error, results, fields) {
+        // When done with the connection, release it.
+        connection.release();
+        // Handle error after the release.
+        if (error) throw error;
+        // Don't use the connection here, it has been returned to the pool.
+    });
+});
+```
+可以在sql语句里面放入?，这里可以代替字符串和键值对
+```js
+connection.query('INSERT INTO students SET ?', [{
+    name: '琳姐'
+}], function (error, results, fields) {
+    console.log(results);
+    // When done with the connection, release it.
+    connection.release();
+    // Handle error after the release.
+    if (error) throw error;
+    // Don't use the connection here, it has been returned to the pool.
+});
+```
+
+# 封装数据库的增删改查
+
+```js
+var mysql = require('mysql');
+var pool = mysql.createPool({
+    connectionLimit: 10,
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'test'
+});
+const getConnection = () => {
+    return new Promise((resolve, reject) => {
+        // 连接池可以执行连接和释放
+        pool.getConnection(function (err, connection) {
+            if (err) {
+                reject(err);
+                // not connected!
+                throw err;
+            } else {
+                resolve(connection);
+            }
+        });
+    })
+}
+const query = (connection, sql, params) => {
+    return new Promise((resolve, reject) => {
+        // Use the connection
+        connection.query(sql, [params ? params : ''], function (error, results, fields) {
+            console.log(results);
+            // When done with the connection, release it.
+            connection.release();
+            // Handle error after the release.
+            if (error) {
+                reject(error);
+                throw error;
+            } else {
+                resolve(results);
+            };
+            // Don't use the connection here, it has been returned to the pool.
+        });
+    })
+}
+const find = async (table, params) => {
+    const connection = await getConnection();
+    if (params) {
+        return await query(connection, `SELECT * FROM ${table} where ?`, params);
+    } else {
+        return await query(connection, `SELECT * FROM ${table}`, null);
+    }
+
+}
+module.exports = {
+    find
+}
+```
+
+# 配合express
+
+后端你要给我一个接口，这个接口需要我查找学生的信息
+
+GET： http://localhost:3000/students/find?id=xx
+
+GET：http://localhost:3000/students/find?name=xx
+
+后端返回一个数据结构
+
+```json
+{
+    status:'success',
+    name:xxx,
+    id:xxx
+}
+```
+
+在routes文件夹里面新增一份路由students.js
+```js
+var express = require('express');
+var router = express.Router();
+
+router.get('/find', function (req, res, next) {
+    // 再找views里面index.jade
+    res.send('stu')
+});
+
+module.exports = router;
+```
+
+在app.js中加载该路由，新增一个新的中间件
+```js
+var studentsRouter = require('./routes/students');
+app.use('/students', studentsRouter);
+```
+
+在express项目中安装mysql模块
+```js
+npm install mysql --save
+```
+引入我们封装好的db.js自定义操作数据库的模块
