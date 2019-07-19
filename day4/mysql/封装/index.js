@@ -1,6 +1,4 @@
-const {
-    find
-} = require('./db')
+const {find} = require('./db')
 let result = find('students', {
     id: 1
 });

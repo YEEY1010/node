@@ -11,7 +11,7 @@ npm install -g express-generator@4
 如果安装成功，会在全局拥有一个express的命令
 ```bash
 # 创建一个项目
-express 路径
+express 建议相对路径
 express ./express-project
 ```
 <img src="1.png">
