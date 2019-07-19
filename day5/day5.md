@@ -1,5 +1,7 @@
 # mongodb
 
+本质上fs模块，对硬盘的读写
+
 在js比较流行，[官网下载地址](https://www.mongodb.com/download-center/community)
 
 安装
@@ -28,7 +30,7 @@ mongo --version
 
 [Robo 3T](https://studio3t.com/download-thank-you/?OS=win64)
 
-# 新建数据库
+# 新建/连接数据库
 
 所以在bin文件夹下找到mongod.exe命令，然后通过管理员执行`mongod --dbpath x`路径x，路径可以是任何地方，我这里选择在D盘的MongoDB目录下，当然路径不要包含特殊的字符串，比如Program Files (x86)也不行
 
@@ -114,4 +116,69 @@ var assert = require('assert');
 assert.strictEqual(1, 1);
 ```
 
+# NoSql
 
+mongodb去除sql语句存在的，你要利用mongodb给你封装好的方法来去实现类似sql的操作
+
+- 查
+```js
+collection.find({ a : 2 })
+// 全找
+collection.find()
+```
+- 改
+
+寻找要改的那一条 找a=2的那一条，把里面的b改为1
+```js
+collection.updateOne({ a : 2 }, { $set: { b : 1 } }
+```
+
+- 删
+
+```js
+collection.deleteOne({ a : 3 })
+```
+
+- 增
+
+```js
+collection.insertMany([{a : 1}, {a : 2}, {a : 3}])
+```
+
+# 查询ID
+
+查询自动生成的ObjectId
+```js
+var ObjectId = require('mongodb').ObjectId;
+let _id = ObjectId("5bcae50ed1f2c2f5e4e1a76a");
+db.collection('xxx').find({
+    "_id": _id
+}).forEach(function (item) {
+    console.log(item)
+})
+```
+
+# 详细的文档
+
+[Mongodb](https://github.com/Wscats/node-tutorial/issues/20)
+
+
+# Bootstrap
+
+Bootstrap 是全球最受欢迎的前端组件库，用于开发响应式布局、移动设备优先的 WEB 项目。
+
+Bootstrap 是一套用于 HTML、CSS 和 JS 开发的开源工具集。利用我们提供的 Sass 变量和大量 mixin、响应式栅格系统、可扩展的预制组件、基于 jQuery 的强大的插件系统，能够快速为你的想法开发出原型或者构建整个 app 。
+
+精髓：复制粘贴
+
+Ctrl+C Ctrl+V
+
+# 关于开发中的跨域问题
+
+因为前后端是分离的，所以前后端不同作用域，会出现跨域
+
+以express为例，我们可以把前端所有的文件放进express的public静态文件夹里面，那此时这个前端页面可以通过express的端口去访问
+
+在测试的时候可以前后端分离用cors解决跨域
+
+在发布的时候，前后端同服务器下，可以跨域，后端cors
